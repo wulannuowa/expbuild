@@ -2,7 +2,7 @@ module github.com/expbuild/expbuild
 
 go 1.19
 
-replace github.com/bazelbuild/remote-apis/build/bazel/semver => github.com/expbuild/expbuild/proto/build/bazel/semver v0.0.0
+replace github.com/bazelbuild/remote-apis/build/bazel/semver => github.com/expbuild/expbuild/proto/build/bazel/semver v0.0.1
 
 require (
 	google.golang.org/genproto v0.0.0-20221207170731-23e4bf6bdc37

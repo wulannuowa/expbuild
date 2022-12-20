@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.8
-// source: build/bazel/remote/execution/v2/remote_execution.proto
+// source: proto/remote_execution.proto
 
-package remoteexecution
+package remote_execution
 
 import (
 	context "context"
@@ -340,7 +340,7 @@ var Execution_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "build/bazel/remote/execution/v2/remote_execution.proto",
+	Metadata: "proto/remote_execution.proto",
 }
 
 // ActionCacheClient is the client API for ActionCache service.
@@ -524,7 +524,7 @@ var ActionCache_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "build/bazel/remote/execution/v2/remote_execution.proto",
+	Metadata: "proto/remote_execution.proto",
 }
 
 // ContentAddressableStorageClient is the client API for ContentAddressableStorage service.
@@ -899,7 +899,7 @@ var ContentAddressableStorage_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "build/bazel/remote/execution/v2/remote_execution.proto",
+	Metadata: "proto/remote_execution.proto",
 }
 
 // CapabilitiesClient is the client API for Capabilities service.
@@ -1005,5 +1005,5 @@ var Capabilities_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "build/bazel/remote/execution/v2/remote_execution.proto",
+	Metadata: "proto/remote_execution.proto",
 }
