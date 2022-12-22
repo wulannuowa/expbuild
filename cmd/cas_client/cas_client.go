@@ -25,12 +25,22 @@ func main() {
 		log.Fatalf("fail to dial: %v", err)
 	}
 	defer conn.Close()
-	client := pb.NewCapabilitiesClient(conn)
+	client := pb.NewContentAddressableStorageClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	req := pb.GetCapabilitiesRequest{}
+	req := pb.FindMissingBlobsRequest{
+		BlobDigests: []*pb.Digest{
+			{
+				Hash:      "test",
+				SizeBytes: 123,
+			},
+		},
+	}
 
-	r, err := client.GetCapabilities(ctx, &req)
+	r, err := client.FindMissingBlobs(ctx, &req)
+	if err != nil {
+		log.Printf("some thing getting error %v", err)
+	}
 	fmt.Println(r.String())
 }
