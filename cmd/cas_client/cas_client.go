@@ -4,10 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"time"
 
 	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
+	"github.com/expbuild/expbuild/util/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -22,7 +22,7 @@ func main() {
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	conn, err := grpc.Dial(*serverAddr, opts...)
 	if err != nil {
-		log.Fatalf("fail to dial: %v", err)
+		log.Errorf("fail to dial: %v", err)
 	}
 	defer conn.Close()
 	client := pb.NewContentAddressableStorageClient(conn)
@@ -40,7 +40,7 @@ func main() {
 
 	r, err := client.FindMissingBlobs(ctx, &req)
 	if err != nil {
-		log.Printf("some thing getting error %v", err)
+		log.Errorf("some thing getting error %v", err)
 	}
 	fmt.Println(r.String())
 }

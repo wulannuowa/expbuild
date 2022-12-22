@@ -3,9 +3,9 @@ package store
 import (
 	"context"
 	"flag"
-	"log"
 
 	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
+	"github.com/expbuild/expbuild/util/log"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -34,7 +34,7 @@ func (s RedisStore) HasBlob(digest *pb.Digest) bool {
 	var ctx = context.Background()
 	n, err := s.rdb.Exists(ctx, digest.Hash).Result()
 	if err != nil {
-		log.Fatalf("some thing getting error %v", err)
+		log.Errorf("some thing getting error %v", err)
 	}
 	return n > 0
 }

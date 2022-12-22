@@ -2,7 +2,8 @@ package cas
 
 import (
 	"context"
-	"log"
+
+	"github.com/expbuild/expbuild/util/log"
 
 	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
 )
@@ -18,7 +19,7 @@ type CASServer struct {
 }
 
 func (s *CASServer) FindMissingBlobs(ctx context.Context, req *pb.FindMissingBlobsRequest) (*pb.FindMissingBlobsResponse, error) {
-	log.Printf("Received find missing request: %v", req.GetBlobDigests())
+	log.Debugf("Received find missing request: %v", req.GetBlobDigests())
 	missing_digests := []*pb.Digest{}
 	for _, digest := range req.GetBlobDigests() {
 		if !s.Store.HasBlob(digest) {
