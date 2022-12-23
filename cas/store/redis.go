@@ -42,8 +42,11 @@ func (s RedisStore) HasBlob(ctx context.Context, digest *pb.Digest) bool {
 }
 
 func (s RedisStore) GetBlob(ctx context.Context, digest *pb.Digest) ([]byte, error) {
-	data := []byte{}
-	return data, nil
+	return s.rdb.Get(ctx, digestToKey(digest)).Bytes()
+}
+
+func (s RedisStore) PutBlob(ctx context.Context, digest *pb.Digest, data []byte) error {
+	return s.rdb.Set(ctx, digestToKey(digest), data, 0).Err()
 }
 
 func (s RedisStore) FindMissingBlobs(ctx context.Context, digests []*pb.Digest) ([]*pb.Digest, error) {

@@ -32,3 +32,19 @@ func TestFindMissing(t *testing.T) {
 	assert.Equal(t, err, nil)
 	assert.Equal(t, missing[0].Hash, "test1")
 }
+
+func TestSetGetBlob(t *testing.T) {
+
+	ctx := context.Background()
+
+	store := store.MakeRedisStore()
+
+	digest1 := &pb.Digest{
+		Hash:      "test",
+		SizeBytes: 123,
+	}
+	store.PutBlob(ctx, digest1, []byte("this is a test"))
+	data, err := store.GetBlob(ctx, digest1)
+	assert.Equal(t, err, nil)
+	assert.Equal(t, string(data), "this is a test")
+}
