@@ -19,7 +19,7 @@ package google.bytestream;
 import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/bytestream;bytestream";
+option go_package = "github.com/expbuild/expbuild/proto/gen/bytestream";
 option java_outer_classname = "ByteStreamProto";
 option java_package = "com.google.bytestream";
 
