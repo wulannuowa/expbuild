@@ -11,6 +11,7 @@ import (
 	pbbs "github.com/expbuild/expbuild/proto/gen/bytestream"
 	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
 	"github.com/expbuild/expbuild/util/log"
+	"github.com/expbuild/expbuild/util/math"
 	code "google.golang.org/genproto/googleapis/rpc/code"
 	status "google.golang.org/genproto/googleapis/rpc/status"
 )
@@ -27,6 +28,10 @@ type CASServer struct {
 	pbbs.UnimplementedByteStreamServer
 	Store CASStore
 }
+
+const (
+	SEND_BLOCK_SIZE int64 = 1024 * 1024
+)
 
 func (s *CASServer) FindMissingBlobs(ctx context.Context, req *pb.FindMissingBlobsRequest) (*pb.FindMissingBlobsResponse, error) {
 	log.Debugf("Received find missing request: %v", req.GetBlobDigests())
@@ -77,6 +82,32 @@ func (s *CASServer) GetTree(req *pb.GetTreeRequest, stream pb.ContentAddressable
 
 func (s *CASServer) Read(req *pbbs.ReadRequest, stream pbbs.ByteStream_ReadServer) error {
 	log.Debugf("Recived  Read")
+	digest := resourceNameToDigest(req.ResourceName)
+	data, err := s.Store.GetBlob(stream.Context(), digest)
+	if err != nil {
+		return err
+	}
+	offset := req.ReadOffset
+	if offset < 0 {
+		offset = 0
+	}
+
+	remaining := int64(len(data)) - offset
+	if req.ReadLimit > 0 {
+		remaining = math.Min(req.ReadLimit, remaining)
+	}
+	for remaining > 0 {
+		block_size := math.Min(SEND_BLOCK_SIZE, remaining)
+		block := data[offset : offset+block_size]
+		send_err := stream.Send(&pbbs.ReadResponse{
+			Data: block,
+		})
+		if send_err != nil {
+			return send_err
+		}
+		offset = offset + block_size
+		remaining -= block_size
+	}
 	return nil
 }
 
