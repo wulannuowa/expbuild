@@ -14,6 +14,7 @@ import (
 	"github.com/expbuild/expbuild/util/math"
 	code "google.golang.org/genproto/googleapis/rpc/code"
 	status "google.golang.org/genproto/googleapis/rpc/status"
+	"google.golang.org/protobuf/proto"
 )
 
 type CASStore interface {
@@ -72,11 +73,40 @@ func (s *CASServer) BatchUpdateBlobs(ctx context.Context, req *pb.BatchUpdateBlo
 
 func (s *CASServer) BatchReadBlobs(ctx context.Context, req *pb.BatchReadBlobsRequest) (*pb.BatchReadBlobsResponse, error) {
 	log.Debugf("Recived BatchReadBlobs")
-	return nil, nil
+	responses := []*pb.BatchReadBlobsResponse_Response{}
+	for _, digest := range req.Digests {
+		data, err := s.Store.GetBlob(ctx, digest)
+		if err != nil {
+			return nil, err
+		} else {
+			res := &pb.BatchReadBlobsResponse_Response{
+				Digest: digest,
+				Data:   data,
+				Status: &status.Status{
+					Code:    int32(code.Code_OK),
+					Message: "OK",
+				},
+			}
+			responses = append(responses, res)
+		}
+	}
+
+	return &pb.BatchReadBlobsResponse{
+		Responses: responses,
+	}, nil
 }
 
 func (s *CASServer) GetTree(req *pb.GetTreeRequest, stream pb.ContentAddressableStorage_GetTreeServer) error {
 	log.Debugf("Recived GetTree")
+	root := pb.Directory{}
+	data, err := s.Store.GetBlob(stream.Context(), req.RootDigest)
+	if err != nil {
+		return err
+	}
+	proto.Unmarshal(data, &root)
+	stream.Send(&pb.GetTreeResponse{
+		Directories: []*pb.Directory{&root},
+	})
 	return nil
 }
 
