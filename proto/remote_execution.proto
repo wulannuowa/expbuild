@@ -1908,3 +1908,15 @@ message RequestMetadata {
   // or equality across invocations, though some client tools may offer these guarantees.
   string configuration_id = 7;
 }
+
+
+// for expbuild inner struct
+
+message Job {
+  // an uniq id 
+  string id = 1;
+  // the action of this job
+  Digest action = 2;
+  
+  ActionResult result = 3;
+} 
