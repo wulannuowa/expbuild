@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "queue",
+    srcs = ["queue.go"],
+    importpath = "github.com/expbuild/expbuild/pkg/queue",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkg/proto/gen/remote_execution",
+        "//pkg/util/log",
+        "@com_github_rabbitmq_amqp091_go//:amqp091-go",
+    ],
+)
