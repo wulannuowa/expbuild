@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
-	"github.com/expbuild/expbuild/queue"
+	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
+	"github.com/expbuild/expbuild/pkg/queue"
 	"github.com/google/uuid"
 )
 

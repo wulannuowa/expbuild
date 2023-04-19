@@ -4,11 +4,11 @@ import (
 	"flag"
 	"net"
 
-	"github.com/expbuild/expbuild/cas"
-	"github.com/expbuild/expbuild/cas/store"
-	pbbs "github.com/expbuild/expbuild/proto/gen/bytestream"
-	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
-	"github.com/expbuild/expbuild/util/log"
+	"github.com/expbuild/expbuild/pkg/cas"
+	"github.com/expbuild/expbuild/pkg/cas/store"
+	pbbs "github.com/expbuild/expbuild/pkg/proto/gen/bytestream"
+	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
+	"github.com/expbuild/expbuild/pkg/util/log"
 	"google.golang.org/grpc"
 )
 

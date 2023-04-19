@@ -21,7 +21,7 @@
 package remote_execution
 
 import (
-	semver "github.com/expbuild/expbuild/proto/gen/semver"
+	semver "github.com/expbuild/expbuild/pkg/proto/gen/semver"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	longrunning "google.golang.org/genproto/googleapis/longrunning"
 	status "google.golang.org/genproto/googleapis/rpc/status"

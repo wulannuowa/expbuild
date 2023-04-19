@@ -3,7 +3,7 @@ package exe
 import (
 	"testing"
 
-	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
+	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
 	longrunning "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc"
 )

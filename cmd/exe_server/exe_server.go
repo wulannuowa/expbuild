@@ -4,9 +4,9 @@ import (
 	"flag"
 	"net"
 
-	"github.com/expbuild/expbuild/exe"
-	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
-	"github.com/expbuild/expbuild/util/log"
+	"github.com/expbuild/expbuild/pkg/exe"
+	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
+	"github.com/expbuild/expbuild/pkg/util/log"
 	"google.golang.org/grpc"
 )
 

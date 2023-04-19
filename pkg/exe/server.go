@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
-	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
-	"github.com/expbuild/expbuild/util/log"
+	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
+	"github.com/expbuild/expbuild/pkg/util/log"
 	"github.com/golang/protobuf/proto"
 	"github.com/google/uuid"
 	amqp "github.com/rabbitmq/amqp091-go"

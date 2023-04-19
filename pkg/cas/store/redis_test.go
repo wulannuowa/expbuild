@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/expbuild/expbuild/cas/store"
-	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
+	"github.com/expbuild/expbuild/pkg/cas/store"
+	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
 	"github.com/go-redis/redis/v8"
 	"github.com/stretchr/testify/assert"
 )

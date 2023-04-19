@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/expbuild/expbuild/exe"
+	"github.com/expbuild/expbuild/pkg/exe"
 )
 
 func TestScheduler_Wait(t *testing.T) {

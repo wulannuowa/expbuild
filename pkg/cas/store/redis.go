@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	pb "github.com/expbuild/expbuild/proto/gen/remote_execution"
-	"github.com/expbuild/expbuild/util/log"
+	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
+	"github.com/expbuild/expbuild/pkg/util/log"
 	"github.com/go-redis/redis/v8"
 )
 
