@@ -3,7 +3,6 @@ package exe
 import (
 	"fmt"
 
-	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
 	"github.com/expbuild/expbuild/pkg/util/log"
 	"github.com/golang/protobuf/proto"
@@ -94,7 +93,7 @@ func (s *ExeServer) Execute(req *pb.ExecuteRequest, stream pb.Execution_ExecuteS
 	operation := &longrunning.Operation{
 		Name: job.Id,
 		Done: true,
-		Result: &longrunningpb.Operation_Response{
+		Result: &longrunning.Operation_Response{
 			Response: res,
 		},
 	}
