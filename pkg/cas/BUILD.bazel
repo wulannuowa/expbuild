@@ -2,7 +2,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "cas",
-    srcs = ["server.go"],
+    srcs = ["service.go"],
     importpath = "github.com/expbuild/expbuild/pkg/cas",
     visibility = ["//visibility:public"],
     deps = [
@@ -10,6 +10,7 @@ go_library(
         "//pkg/proto/gen/remote_execution",
         "//pkg/util/log",
         "//pkg/util/math",
+        "//pkg/util/digest",
         "@go_googleapis//google/rpc:code_go_proto",
         "@go_googleapis//google/api:annotations_go_proto",
         "@org_golang_google_protobuf//proto",
