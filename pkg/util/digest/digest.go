@@ -9,7 +9,6 @@ import (
 
 // DigestToString
 // convert `pb.digest` to string format `hash_length`
-
 func DigestToString(digest *pb.Digest) string {
 	return digest.Hash + "_" + strconv.FormatInt(int64(digest.SizeBytes), 10)
 }
