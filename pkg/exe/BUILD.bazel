@@ -4,7 +4,7 @@ go_library(
     name = "exe",
     srcs = [
         "scheduler.go",
-        "server.go",
+        "service.go",
     ],
     importpath = "github.com/expbuild/expbuild/pkg/exe",
     visibility = ["//visibility:public"],
@@ -27,7 +27,7 @@ go_test(
     name = "exe_test",
     srcs = [
         "scheduler_test.go",
-        "server_test.go",
+        "service_test.go",
     ],
     embed = [":exe"],
     deps = [
