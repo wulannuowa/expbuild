@@ -5,11 +5,10 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"strconv"
-	"strings"
 
 	pbbs "github.com/expbuild/expbuild/pkg/proto/gen/bytestream"
 	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
+	digest_util "github.com/expbuild/expbuild/pkg/util/digest"
 	"github.com/expbuild/expbuild/pkg/util/log"
 	"github.com/expbuild/expbuild/pkg/util/math"
 	code "google.golang.org/genproto/googleapis/rpc/code"
@@ -112,7 +111,7 @@ func (s *CASService) GetTree(req *pb.GetTreeRequest, stream pb.ContentAddressabl
 
 func (s *CASService) Read(req *pbbs.ReadRequest, stream pbbs.ByteStream_ReadServer) error {
 	log.Debugf("Recived  Read")
-	digest := resourceNameToDigest(req.ResourceName)
+	digest := digest_util.GetDigestFromResourceName(req.ResourceName)
 	data, err := s.Store.GetBlob(stream.Context(), digest)
 	if err != nil {
 		return err
@@ -148,7 +147,7 @@ func (s *CASService) Write(stream pbbs.ByteStream_WriteServer) error {
 	for {
 		d, err := stream.Recv()
 		if d != nil {
-			digest = resourceNameToDigest(d.ResourceName)
+			digest = digest_util.GetDigestFromResourceName(d.ResourceName)
 			data.Write(d.Data)
 		}
 		if err == io.EOF {
@@ -170,16 +169,4 @@ func (s *CASService) Write(stream pbbs.ByteStream_WriteServer) error {
 func (s *CASService) QueryWriteStatus(ctx context.Context, req *pbbs.QueryWriteStatusRequest) (*pbbs.QueryWriteStatusResponse, error) {
 	log.Debugf("Recived  QueryWriteStatus")
 	return nil, nil
-}
-
-func resourceNameToDigest(resourceName string) *pb.Digest {
-	items := strings.Split(resourceName, "/")
-	hash := items[len(items)-2]
-	byte_size_str := items[len(items)-1]
-	byte_size, _ := strconv.Atoi(byte_size_str)
-	digest := pb.Digest{
-		Hash:      hash,
-		SizeBytes: int64(byte_size),
-	}
-	return &digest
 }
