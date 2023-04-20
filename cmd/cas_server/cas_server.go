@@ -24,7 +24,7 @@ func main() {
 		return
 	}
 	s := grpc.NewServer()
-	svr := cas.CASServer{
+	svr := cas.CASService{
 		Store: store.MakeRedisStore(),
 	}
 	pb.RegisterContentAddressableStorageServer(s, &svr)

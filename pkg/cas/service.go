@@ -24,7 +24,7 @@ type CASStore interface {
 	FindMissingBlobs(ctx context.Context, digest []*pb.Digest) ([]*pb.Digest, error)
 }
 
-type CASServer struct {
+type CASService struct {
 	pb.UnimplementedContentAddressableStorageServer
 	pbbs.UnimplementedByteStreamServer
 	Store CASStore
@@ -34,7 +34,7 @@ const (
 	SEND_BLOCK_SIZE int64 = 1024 * 1024
 )
 
-func (s *CASServer) FindMissingBlobs(ctx context.Context, req *pb.FindMissingBlobsRequest) (*pb.FindMissingBlobsResponse, error) {
+func (s *CASService) FindMissingBlobs(ctx context.Context, req *pb.FindMissingBlobsRequest) (*pb.FindMissingBlobsResponse, error) {
 	log.Debugf("Received find missing request: %v", req.GetBlobDigests())
 	missing_digests := []*pb.Digest{}
 	for _, digest := range req.GetBlobDigests() {
@@ -48,7 +48,7 @@ func (s *CASServer) FindMissingBlobs(ctx context.Context, req *pb.FindMissingBlo
 	return &response, nil
 }
 
-func (s *CASServer) BatchUpdateBlobs(ctx context.Context, req *pb.BatchUpdateBlobsRequest) (*pb.BatchUpdateBlobsResponse, error) {
+func (s *CASService) BatchUpdateBlobs(ctx context.Context, req *pb.BatchUpdateBlobsRequest) (*pb.BatchUpdateBlobsResponse, error) {
 	log.Debugf("Recived BatchUpdateBlobs")
 	response := pb.BatchUpdateBlobsResponse{}
 	for _, r := range req.Requests {
@@ -71,7 +71,7 @@ func (s *CASServer) BatchUpdateBlobs(ctx context.Context, req *pb.BatchUpdateBlo
 	return &response, nil
 }
 
-func (s *CASServer) BatchReadBlobs(ctx context.Context, req *pb.BatchReadBlobsRequest) (*pb.BatchReadBlobsResponse, error) {
+func (s *CASService) BatchReadBlobs(ctx context.Context, req *pb.BatchReadBlobsRequest) (*pb.BatchReadBlobsResponse, error) {
 	log.Debugf("Recived BatchReadBlobs")
 	responses := []*pb.BatchReadBlobsResponse_Response{}
 	for _, digest := range req.Digests {
@@ -96,7 +96,7 @@ func (s *CASServer) BatchReadBlobs(ctx context.Context, req *pb.BatchReadBlobsRe
 	}, nil
 }
 
-func (s *CASServer) GetTree(req *pb.GetTreeRequest, stream pb.ContentAddressableStorage_GetTreeServer) error {
+func (s *CASService) GetTree(req *pb.GetTreeRequest, stream pb.ContentAddressableStorage_GetTreeServer) error {
 	log.Debugf("Recived GetTree")
 	root := pb.Directory{}
 	data, err := s.Store.GetBlob(stream.Context(), req.RootDigest)
@@ -110,7 +110,7 @@ func (s *CASServer) GetTree(req *pb.GetTreeRequest, stream pb.ContentAddressable
 	return nil
 }
 
-func (s *CASServer) Read(req *pbbs.ReadRequest, stream pbbs.ByteStream_ReadServer) error {
+func (s *CASService) Read(req *pbbs.ReadRequest, stream pbbs.ByteStream_ReadServer) error {
 	log.Debugf("Recived  Read")
 	digest := resourceNameToDigest(req.ResourceName)
 	data, err := s.Store.GetBlob(stream.Context(), digest)
@@ -141,7 +141,7 @@ func (s *CASServer) Read(req *pbbs.ReadRequest, stream pbbs.ByteStream_ReadServe
 	return nil
 }
 
-func (s *CASServer) Write(stream pbbs.ByteStream_WriteServer) error {
+func (s *CASService) Write(stream pbbs.ByteStream_WriteServer) error {
 	log.Debugf("Recived  Write")
 	data := bytes.NewBuffer(nil)
 	digest := &pb.Digest{}
@@ -167,7 +167,7 @@ func (s *CASServer) Write(stream pbbs.ByteStream_WriteServer) error {
 		}
 	}
 }
-func (s *CASServer) QueryWriteStatus(ctx context.Context, req *pbbs.QueryWriteStatusRequest) (*pbbs.QueryWriteStatusResponse, error) {
+func (s *CASService) QueryWriteStatus(ctx context.Context, req *pbbs.QueryWriteStatusRequest) (*pbbs.QueryWriteStatusResponse, error) {
 	log.Debugf("Recived  QueryWriteStatus")
 	return nil, nil
 }
