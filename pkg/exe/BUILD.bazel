@@ -10,7 +10,6 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//pkg/proto/gen/remote_execution",
-        "//pkg/queue",
         "//pkg/util/log",
         "@com_github_golang_protobuf//proto:go_default_library",
         "@com_github_google_uuid//:uuid",

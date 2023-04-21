@@ -5,7 +5,7 @@ go 1.19
 replace github.com/bazelbuild/remote-apis/build/bazel/semver => github.com/expbuild/expbuild/gen/proto/build/bazel/semver v0.0.1
 
 require (
-	cloud.google.com/go/longrunning v0.3.0
+	github.com/alicebob/miniredis v2.5.0+incompatible
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.3.0
@@ -18,8 +18,8 @@ require (
 )
 
 require (
+	cloud.google.com/go/longrunning v0.3.0 // indirect
 	github.com/alicebob/gopher-json v0.0.0-20230218143504-906a9b012302 // indirect
-	github.com/alicebob/miniredis v2.5.0+incompatible // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
