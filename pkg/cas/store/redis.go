@@ -33,6 +33,12 @@ func MakeRedisStore() RedisStore {
 	}
 }
 
+func MakeRedisStoreWithClient(client *redis.Client) RedisStore {
+	return RedisStore{
+		rdb: client,
+	}
+}
+
 func (s RedisStore) HasBlob(ctx context.Context, digest *pb.Digest) bool {
 	n, err := s.rdb.Exists(ctx, digest.Hash).Result()
 	if err != nil {

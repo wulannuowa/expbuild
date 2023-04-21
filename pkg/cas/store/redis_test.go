@@ -2,23 +2,39 @@ package store_test
 
 import (
 	"context"
+	"log"
+	"os"
 	"testing"
 
+	"github.com/alicebob/miniredis"
 	"github.com/expbuild/expbuild/pkg/cas/store"
 	pb "github.com/expbuild/expbuild/pkg/proto/gen/remote_execution"
 	"github.com/go-redis/redis/v8"
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+
+	code := m.Run()
+	os.Exit(code)
+}
+
 func TestFindMissing(t *testing.T) {
+
+	mr, err := miniredis.Run()
+	if err != nil {
+		log.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer mr.Close()
+	mr.Set("cas_test_123", "this is a test")
+
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
+		Addr: mr.Addr(),
 	})
+
 	ctx := context.Background()
-	client.Set(ctx, "cas_test_123", "this is a test", -1)
-	store := store.MakeRedisStore()
+	//client.Set(ctx, "cas_test_123", "this is a test", -1)
+	store := store.MakeRedisStoreWithClient(client)
 	digest1 := &pb.Digest{
 		Hash:      "test",
 		SizeBytes: 123,
@@ -34,10 +50,19 @@ func TestFindMissing(t *testing.T) {
 }
 
 func TestSetGetBlob(t *testing.T) {
+	mr, err := miniredis.Run()
+	if err != nil {
+		log.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer mr.Close()
+	mr.Set("cas_test_123", "this is a test")
 
+	client := redis.NewClient(&redis.Options{
+		Addr: mr.Addr(),
+	})
 	ctx := context.Background()
 
-	store := store.MakeRedisStore()
+	store := store.MakeRedisStoreWithClient(client)
 
 	digest1 := &pb.Digest{
 		Hash:      "test",
