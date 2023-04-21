@@ -2,6 +2,19 @@ load("@bazel_gazelle//:deps.bzl", "go_repository")
 
 def go_dependencies():
     go_repository(
+        name = "com_github_alicbob_miniredis",
+        importpath = "github.com/alicebob/miniredis",
+        sum = "h1:yBHoLpsyjupjz3NL3MhKMVkR41j82Yjf3KFv7ApYzUI=",
+        version = "v2.5.0+incompatible",
+    )
+    go_repository(
+        name = "com_github_alicebob_gopher_json",
+        importpath = "github.com/alicebob/gopher-json",
+        sum = "h1:uvdUDbHQHO85qeSydJtItA4T55Pw6BtAejd0APRJOCE=",
+        version = "v0.0.0-20230218143504-906a9b012302",
+    )
+
+    go_repository(
         name = "com_github_census_instrumentation_opencensus_proto",
         importpath = "github.com/census-instrumentation/opencensus-proto",
         sum = "h1:glEXhBS5PSLLv4IXzLA5yPRVX4bilULVyxxbrfOtDAk=",
@@ -13,6 +26,25 @@ def go_dependencies():
         sum = "h1:YRXhKfTDauu4ajMg1TPgFO5jnlC2HCbmLXMcTG5cbYE=",
         version = "v2.1.2",
     )
+    go_repository(
+        name = "com_github_chzyer_logex",
+        importpath = "github.com/chzyer/logex",
+        sum = "h1:Swpa1K6QvQznwJRcfTfQJmTE72DqScAa40E+fbHEXEE=",
+        version = "v1.1.10",
+    )
+    go_repository(
+        name = "com_github_chzyer_readline",
+        importpath = "github.com/chzyer/readline",
+        sum = "h1:fY5BOSpyZCqRo5OhCuC+XN+r/bBCmeuuJtjz+bCNIf8=",
+        version = "v0.0.0-20180603132655-2972be24d48e",
+    )
+    go_repository(
+        name = "com_github_chzyer_test",
+        importpath = "github.com/chzyer/test",
+        sum = "h1:q763qf9huN11kDQavWsoZXJNW3xEE4JJyHa5Q25/sd8=",
+        version = "v0.0.0-20180213035817-a1ea475d72b1",
+    )
+
     go_repository(
         name = "com_github_cncf_udpa_go",
         importpath = "github.com/cncf/udpa/go",
@@ -91,6 +123,13 @@ def go_dependencies():
         sum = "h1:ROPKBNFfQgOUMifHyP+KYbvpjbdoFNs+aK7DXlji0Tw=",
         version = "v1.5.2",
     )
+    go_repository(
+        name = "com_github_gomodule_redigo",
+        importpath = "github.com/gomodule/redigo",
+        sum = "h1:Sl3u+2BI/kk+VEatbj0scLdrFhjPmbxOc1myhDP41ws=",
+        version = "v1.8.9",
+    )
+
     go_repository(
         name = "com_github_google_go_cmp",
         importpath = "github.com/google/go-cmp",
@@ -211,6 +250,13 @@ def go_dependencies():
         sum = "h1:dPmz1Snjq0kmkz159iL7S6WzdahUTHnHB5M56WFVifs=",
         version = "v1.3.5",
     )
+    go_repository(
+        name = "com_github_yuin_gopher_lua",
+        importpath = "github.com/yuin/gopher-lua",
+        sum = "h1:BojcDhfyDWgU2f2TOzYK/g5p2gxMrku8oupLDqlnSqE=",
+        version = "v1.1.0",
+    )
+
     go_repository(
         name = "com_google_cloud_go",
         importpath = "cloud.google.com/go",

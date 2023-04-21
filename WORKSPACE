@@ -20,32 +20,13 @@ http_archive(
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "d0f5f605d0d656007ce6c8b5a82df3037e1d8fe8b121ed42e536f569dec16113",
-    strip_prefix = "protobuf-3.14.0",
+    strip_prefix = "protobuf-22.3",
+    sha256 = "4101e11ef41afa91cac1bd95483cb781626781ae1a331501ed8379f2d82ca9bc",
     urls = [
-        "https://mirror.bazel.build/github.com/protocolbuffers/protobuf/archive/v3.14.0.tar.gz",
-        "https://github.com/protocolbuffers/protobuf/archive/v3.14.0.tar.gz",
+        "https://github.com/protocolbuffers/protobuf/releases/download/v22.3/protobuf-22.3.tar.gz",
     ],
 )
 
-
-
-_grpc_version = "1.47.0"
-
-_grpc_sha256 = "edf25f4db6c841853b7a29d61b0980b516dc31a1b6cdc399bcf24c1446a4a249"
-
-http_archive(
-    name = "com_github_grpc_grpc",
-    sha256 = _grpc_sha256,
-    strip_prefix = "grpc-%s" % _grpc_version,
-    urls = ["https://github.com/grpc/grpc/archive/v%s.zip" % _grpc_version],
-)
-
-load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
-
-grpc_deps()
-
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 load("//:deps.bzl", "go_dependencies")
@@ -62,3 +43,5 @@ go_register_toolchains(version = "1.20.2")
 gazelle_dependencies()
 
 protobuf_deps()
+
+
