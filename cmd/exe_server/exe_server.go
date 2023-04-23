@@ -12,7 +12,6 @@ import (
 
 var (
 	addr = flag.String("addr", "127.0.0.1:50051", "The exe server address")
-	amqp = flag.String("amqp", "amqp://guest:guest@localhost:5672/%2F", "The address of message queue [rabbitmq]")
 )
 
 func main() {
@@ -23,14 +22,13 @@ func main() {
 		return
 	}
 	s := grpc.NewServer()
-	exe_svr := exe.ExeServer{
-		Amqp: *amqp,
-	}
-	if err := exe_svr.Init(); err != nil {
+	exe_svr, err := exe.MakeExeServer()
+	if err != nil {
 		log.Errorf("exe server init error %v", err)
 		panic(1)
 	}
-	pb.RegisterExecutionServer(s, &exe_svr)
+	pb.RegisterExecutionServer(s, exe_svr)
+	exe_svr.Start()
 	log.Infof("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Errorf("failed to serve: %v", err)
