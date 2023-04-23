@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	addr     = flag.String("store.redis.addr", "localhost:6379", "The redis address of cas")
-	password = flag.String("store.redis.password", "", "The redis password of cas")
-	db       = flag.Int("store.redis.db", 0, "The redis db of cas")
+	addr     = flag.String("cas.redis.addr", "localhost:6379", "The redis address of cas")
+	password = flag.String("cas.redis.password", "", "The redis password of cas")
+	db       = flag.Int("cas.redis.db", 0, "The redis db of cas")
 )
 
 type RedisStore struct {
