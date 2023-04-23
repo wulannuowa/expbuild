@@ -39,32 +39,44 @@ func (s *ExeServer) Execute(req *pb.ExecuteRequest, stream pb.Execution_ExecuteS
 		Action: req.ActionDigest,
 	}
 	s.scheduler.Dispatch(&job)
+
 	err := s.scheduler.Wait(job.Id)
+	defer s.scheduler.DeleteJob(job.Id)
 	//TODO result
 	if err != nil {
-		// construct error action result
+		log.Errorf("wait job error %v", err)
+		var eac pb.ActionResult
+		eac.ExitCode = 1
+		return s.sendResult(stream, &eac, job.Id)
 	}
 
-	action_result, err := s.scheduler.GetJobActionResult(job.Id)
+	ac, err := s.scheduler.GetJobActionResult(job.Id)
 	if err != nil {
-		return err
+		log.Errorf("get job result error %v", err)
+		var eac pb.ActionResult
+		eac.ExitCode = 1
+		return s.sendResult(stream, &eac, job.Id)
 	}
-	defer s.scheduler.DeleteJob(job.Id)
 
-	res, err := anypb.New(action_result)
+	return s.sendResult(stream, ac, job.Id)
+	//return status.Errorf(codes.Unimplemented, "method Execute not implemented")
+}
+
+func (s *ExeServer) sendResult(stream pb.Execution_ExecuteServer, ar *pb.ActionResult, jobid string) error {
+	res, err := anypb.New(ar)
 	if err != nil {
 		return fmt.Errorf("recived a wrong job result")
 	}
 	operation := &longrunning.Operation{
-		Name: job.Id,
+		Name: jobid,
 		Done: true,
 		Result: &longrunning.Operation_Response{
 			Response: res,
 		},
 	}
 	return stream.Send(operation)
-	//return status.Errorf(codes.Unimplemented, "method Execute not implemented")
 }
+
 func (s *ExeServer) WaitExecution(req *pb.WaitExecutionRequest, stream pb.Execution_WaitExecutionServer) error {
 	return status.Errorf(codes.Unimplemented, "method WaitExecution not implemented")
 }
