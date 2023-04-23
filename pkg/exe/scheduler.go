@@ -33,10 +33,11 @@ type Scheduler struct {
 
 // The Job dipatch queue implemented by amqp
 type JobDisQueue struct {
-	scheduler *Scheduler
-	conn      *amqp.Connection
-	channel   *amqp.Channel
-	job_queue *amqp.Queue
+	scheduler      *Scheduler
+	conn           *amqp.Connection
+	channel        *amqp.Channel
+	jobQueue       *amqp.Queue
+	jobResultQueue *amqp.Queue
 }
 
 // a job result waiter which wait the job complete or timeout
@@ -166,7 +167,7 @@ func (q *JobDisQueue) declearJobQueue() error {
 		log.Errorf("Rabbitmq declare job queue error %v", err)
 		return err
 	}
-	q.job_queue = &job_queue
+	q.jobQueue = &job_queue
 	return nil
 }
 
@@ -186,6 +187,7 @@ func (q *JobDisQueue) declearJobResultQueue() error {
 		log.Errorf("Rabbitmq queue binding error %v", err)
 		return err
 	}
+	q.jobResultQueue = &queue
 	return nil
 }
 
@@ -196,7 +198,7 @@ func (q *JobDisQueue) SendJob(job *pb.Job) error {
 		return err
 	}
 
-	if err := q.channel.Publish("", q.job_queue.Name, false, false, amqp.Publishing{
+	if err := q.channel.Publish("", q.jobQueue.Name, false, false, amqp.Publishing{
 		ContentType:  "text/plain",
 		Body:         body,
 		DeliveryMode: amqp.Persistent,
@@ -214,7 +216,7 @@ func (q *JobDisQueue) SendJob(job *pb.Job) error {
 // start a new goroutine to consume result from job result queue
 func (q *JobDisQueue) StartConsume() error {
 
-	msgs, err := q.channel.Consume(q.job_queue.Name, "", true, false, false, false, nil)
+	msgs, err := q.channel.Consume(q.jobResultQueue.Name, "", true, false, false, false, nil)
 	if err != nil {
 		log.Errorf("Rabbitmq consume error %v", err)
 		return err
