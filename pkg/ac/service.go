@@ -33,18 +33,18 @@ func (c *ActionCacheService) Clear() {
 }
 
 // Put sets a fake result for a given action digest.
-func (c *ActionCacheService) Put(d pb.Digest, res *pb.ActionResult) {
+func (c *ActionCacheService) Put(d *pb.Digest, res *pb.ActionResult) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	digest_key := digest.DigestToString(&d)
+	digest_key := digest.DigestToString(d)
 	c.results[digest_key] = res
 }
 
 // Get returns a previously saved fake result for the given action digest.
-func (c *ActionCacheService) Get(d pb.Digest) *pb.ActionResult {
+func (c *ActionCacheService) Get(d *pb.Digest) *pb.ActionResult {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	digest_key := digest.DigestToString(&d)
+	digest_key := digest.DigestToString(d)
 	res, ok := c.results[digest_key]
 	if !ok {
 		return nil
